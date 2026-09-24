@@ -38,7 +38,13 @@ template("miri_test") {
 
     test_args = []
     if (defined(invoker.test_name) && invoker.test_name != "") {
-      test_args += [ invoker.test_name ]
+      # Comma-separated names are passed as separate positional args; libtest
+      # runs every test matching any one of them.
+      foreach(f, string_split(invoker.test_name, ",")) {
+        if (f != "") {
+          test_args += [ f ]
+        }
+      }
     }
 
     miri_args = []
