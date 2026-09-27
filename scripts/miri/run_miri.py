@@ -156,18 +156,19 @@ def main():
             + sys.argv[5:]
         )
 
-        print(f"Executing command: {' '.join(command_and_args)}")
+        print(f"Executing command: {' '.join(command_and_args)}", flush=True)
 
-        process = subprocess.Popen(
-            command_and_args, env=os.environ, cwd=project_root
-        )
-        process.wait()
-
-        if process.returncode != 0:
-            sys.stderr.write(
-                f"\nCommand failed with exit code {process.returncode}\n"
-            )
-            sys.exit(process.returncode)
+        # exec instead of fork+wait: this process is replaced by miri, so it
+        # keeps the tty, foreground process group and signal handling intact,
+        # and Python's stdout buffering stops delaying the child's output.
+        # Popen used to chdir for us; execvp does not, and both lib_path and
+        # the --extern paths above are relative to project_root.
+        os.chdir(project_root)
+        try:
+            os.execvp(command_and_args[0], command_and_args)
+        except OSError as e:
+            sys.stderr.write(f"failed to exec {command_and_args[0]}: {e}\n")
+            sys.exit(1)
 
     except FileNotFoundError as e:
         sys.stderr.write(

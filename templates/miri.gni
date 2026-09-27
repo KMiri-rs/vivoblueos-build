@@ -20,6 +20,12 @@ template("miri_test") {
     script = "//build/scripts/miri/run_miri.py"
     outputs = [ "$target_gen_dir/miri_test.stamp" ]
 
+    # Run on the console instead of a captured pipe. The debugger TUI needs a
+    # real terminal on stdin/stdout: crossterm's raw mode and alternate-screen
+    # escapes only take effect when they target the terminal ninja is attached
+    # to, and opening /dev/tty in the default pool is not enough.
+    pool = "//:console($default_toolchain)"
+
     deps = []
     if (defined(invoker.deps)) {
       deps += invoker.deps
