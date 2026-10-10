@@ -30,8 +30,9 @@ blueos_toolchain("blueos_riscv64") {
   }
 }
 
-# We still keep toolchains without the `blueos_` prefix since `blueos_*` toolchains
-# are using different relocation models in their default configuration.
+# We still keep toolchains without the `blueos_` prefix since `blueos_*`
+# toolchains are using different relocation models in their default
+# configuration.
 blueos_toolchain("thumbv7m") {
   target = "thumbv7m-none-eabi"
   cc = "clang --target=${target}"

@@ -104,6 +104,11 @@ template("build_rust") {
     inputs = []
   }
 
+  # Don't compile some weak symbols from blueos that collide with libtest.
+  if (miri_test_allocator) {
+    rustflags += [ "--cfg=disable_weak_symbol" ]
+  }
+
   if (defined(invoker.linker_script)) {
     rustflags += [ "-Clink-arg=-Wl,-T" + rebase_path(invoker.linker_script) ]
     inputs += [ invoker.linker_script ]

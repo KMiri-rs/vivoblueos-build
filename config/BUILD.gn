@@ -31,7 +31,8 @@ _common_rustflags = [
   "static_mut_refs",
 ]
 
-# Miri target crates share one sysroot and MIR configuration; host macros do not.
+# Miri target crates share one sysroot and MIR configuration; host macros do
+# not.
 if (miri_boot && current_toolchain == default_toolchain) {
   _common_rustflags += [
     "--sysroot=" + getenv("MIRI_BOOT_SYSROOT"),
