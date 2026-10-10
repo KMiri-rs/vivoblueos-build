@@ -23,6 +23,8 @@ declare_args() {
   # GN doesn't use target_cpu & target_os internally either, so it
   # should be safe for us to use "board" to make build decision.
   board = "none"
+  miri_boot = false
+  kmiri_toml = "//build/scripts/miri/boot.toml"
 }
 
 declare_args() {

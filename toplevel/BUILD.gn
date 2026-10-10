@@ -12,6 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+if (miri_boot) {
+  group("miri_boot") {
+    deps = [ "//kernel/kernel:check_boot_by_miri" ]
+  }
+}
+
 group("default") {
   deps = [ "//build/boards/${board}:default" ]
 }

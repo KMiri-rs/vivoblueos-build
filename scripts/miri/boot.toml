@@ -1,0 +1,23 @@
+page_table = false
+# Covers KMiri stacks, Rust backing allocations and the highest UART MMIO register.
+total_mem_size = 0x20000000
+[[kalloc]]
+name = "HeapBacking"
+base_addr = 0x03000000
+size = 0x800000
+align = 0x1000
+[[kalloc]]
+name = "Uart0"
+base_addr = 0x10000000
+size = 0x7
+align = 0x1
+[[kalloc]]
+name = "Clint"
+base_addr = 0x02000000
+size = 0xc000
+align = 0x8
+[[kalloc]]
+name = "Plic"
+base_addr = 0x0c000000
+size = 0x200008
+align = 0x4
