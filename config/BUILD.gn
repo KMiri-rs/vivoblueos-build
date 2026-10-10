@@ -29,6 +29,12 @@ _common_rustflags = [
   "dead_code",
   "-A",
   "static_mut_refs",
+  "-A",
+  "suspicious-runtime-symbol-definitions",
+  "-A",
+  "stable_features",
+  "-A",
+  "deprecated",
 ]
 
 # Miri target crates share one sysroot and MIR configuration; host macros do not.
