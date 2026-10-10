@@ -18,6 +18,13 @@ if (miri_boot) {
   }
 }
 
+if (miri_test_allocator) {
+  group("miri_test_allocator") {
+    testonly = true
+    deps = [ "//kernel/allocator:check_allocator_by_miri" ]
+  }
+}
+
 group("default") {
   deps = [ "//build/boards/${board}:default" ]
 }
