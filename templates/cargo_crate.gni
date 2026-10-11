@@ -138,7 +138,9 @@ template("cargo_crate") {
       script = rebase_path("//build/scripts/run_build_script.py")
       build_script_target = ":${build_script_name}(//build/toolchain:host)"
       deps = [ build_script_target ]
-      build_script = "$root_build_dir/host/bin/${build_script_name}"
+      build_script_root_out_dir =
+          get_label_info(build_script_target, "root_out_dir")
+      build_script = "${build_script_root_out_dir}/bin/${build_script_name}"
       flags_file = "$target_out_dir/cargo_flags.rs"
       args = [
         "--build-script",

@@ -183,6 +183,21 @@ blueos_toolchain("host") {
   }
 }
 
+blueos_toolchain("host_no_sysroot") {
+  cc = "clang"
+  cxx = "clang++"
+  ld = cc
+  ar = "llvm-ar"
+  objcopy = "llvm-objcopy"
+  rustc = "rustc"
+  clippy_driver = "clippy-driver"
+
+  toolchain_args = {
+    current_os = host_os
+    current_cpu = host_cpu
+  }
+}
+
 blueos_toolchain("blueos_riscv32imc") {
   cc = "clang --target=riscv32 -march=rv32imc"
   cxx = "clang++ --target=riscv32 -march=rv32imc"

@@ -54,10 +54,11 @@ template("miri_test") {
     }
 
     miri_args = []
-    miri_sysroot =
-        getenv("MIRI_SYSROOT")  # need to set this env on your own. note: miri
-                                # needs std with full MIR which can be compiled
-                                # with -Zalways-encode-mir flag
+    miri_sysroot = getenv("MIRI_SYSROOT")  # note: miri needs std with full MIR
+                                           # compiled with -Zalways-encode-mir.
+    if (miri_sysroot == "") {
+      miri_sysroot = getenv("MIRI_BOOT_SYSROOT")
+    }
     if (miri_sysroot != "") {
       miri_args += [
         "--sysroot",
@@ -67,8 +68,8 @@ template("miri_test") {
 
     args = []
     args += meta_args
-    args += miri_flags
     args += [ rebase_path(invoker.crate, "//") ]
+    args += miri_flags
     args += miri_args
     args += [
       "--",
