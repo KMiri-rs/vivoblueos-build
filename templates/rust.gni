@@ -16,7 +16,20 @@
 template("build_rust") {
   deps = []
   if (defined(invoker.deps)) {
-    deps += invoker.deps
+    if (miri_test_kernel && defined(invoker.crate_type) &&
+        invoker.crate_type == "proc-macro" && !defined(invoker.build_root)) {
+      foreach(dep, invoker.deps) {
+        _dep_parts = []
+        _dep_parts = string_split(dep, ":")
+        if (_dep_parts[0] == "") {
+          deps += [ dep ]
+        } else {
+          deps += [ dep + "(//build/toolchain:host_no_sysroot)" ]
+        }
+      }
+    } else {
+      deps += invoker.deps
+    }
   }
 
   if (defined(invoker.build_deps)) {
@@ -25,8 +38,12 @@ template("build_rust") {
 
   # We are using host toolchain to build proc_macro_deps.
   if (defined(invoker.proc_macro_deps)) {
+    _proc_macro_toolchain = "//build/toolchain:host"
+    if (miri_test_kernel) {
+      _proc_macro_toolchain = "//build/toolchain:host_no_sysroot"
+    }
     foreach(dep, invoker.proc_macro_deps) {
-      deps += [ dep + "(//build/toolchain:host)" ]
+      deps += [ dep + "(${_proc_macro_toolchain})" ]
     }
   }
 
