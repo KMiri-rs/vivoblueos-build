@@ -24,6 +24,7 @@ declare_args() {
   # should be safe for us to use "board" to make build decision.
   board = "none"
   miri_boot = false
+  miri_test_kernel = false
   kmiri_toml = "//build/scripts/miri/boot.toml"
 
   miri_test_allocator = false
@@ -43,6 +44,10 @@ declare_args() {
   # test matching any one of them runs:
   # `make miri_test CASE=test_strlen,bench_push_and_pop`
   miri_test_case = ""
+
+  # Filter kernel miri tests by name; empty means run all tests.
+  # e.g. `make miri_test_kernel CASE=check_spinlock`
+  kernel_miri_test_case = ""
 
   # Extra flags of miri or rustc.
   # e.g. miri_flags=["-Aunsafe_op_in_unsafe_fn", "-Aunused"]

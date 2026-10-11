@@ -25,6 +25,13 @@ if (miri_test_allocator) {
   }
 }
 
+if (miri_test_kernel) {
+  group("miri_test_kernel") {
+    testonly = true
+    deps = [ "//kernel/kernel:check_kernel_by_miri" ]
+  }
+}
+
 group("default") {
   deps = [ "//build/boards/${board}:default" ]
 }
