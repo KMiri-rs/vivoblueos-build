@@ -149,12 +149,23 @@ def main():
         deps = get_all_deps(target, out_dir, project_root)
         extern_flags, ldep_flags = collect_flags_from_deps(deps, abs_out_dir, out_dir)
 
+        extra_args = sys.argv[5:]
+        compile_args = extra_args
+        test_args = []
+        if "--" in extra_args:
+            sep = extra_args.index("--")
+            compile_args = extra_args[:sep]
+            test_args = extra_args[sep + 1:]
+
         command_and_args = (
-            ["miri", "--edition=2021", "--test", lib_path]
+            ["miri", "--edition=2021", "--test"]
             + extern_flags
             + ldep_flags
-            + sys.argv[5:]
+            + compile_args
+            + [lib_path]
         )
+        if test_args:
+            command_and_args += ["--"] + test_args
 
         print(f"Executing command: {' '.join(command_and_args)}", flush=True)
 

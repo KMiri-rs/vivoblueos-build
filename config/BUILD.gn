@@ -33,7 +33,7 @@ _common_rustflags = [
 
 # Miri target crates share one sysroot and MIR configuration; host macros do
 # not.
-if (miri_boot && current_toolchain == default_toolchain) {
+if ((miri_boot || miri_test_kernel) && current_toolchain == default_toolchain) {
   _common_rustflags += [
     "--sysroot=" + getenv("MIRI_BOOT_SYSROOT"),
     "-Zalways-encode-mir",
