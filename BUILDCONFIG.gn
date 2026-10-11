@@ -49,6 +49,14 @@ declare_args() {
   # e.g. `make miri_test_kernel CASE=check_spinlock`
   kernel_miri_test_case = ""
 
+  # In kernel miri unit tests (`miri --test`), allow host libstd/libtest to
+  # resolve to BlueOS weak alloc symbols (`malloc/free/...`) and drive
+  # allocations through the BlueOS allocator.
+  #
+  # Default false keeps host allocator semantics to avoid interfering with
+  # libtest runtime behavior.
+  miri_kernel_use_blueos_alloc = false
+
   # Extra flags of miri or rustc.
   # e.g. miri_flags=["-Aunsafe_op_in_unsafe_fn", "-Aunused"]
   miri_flags = []
