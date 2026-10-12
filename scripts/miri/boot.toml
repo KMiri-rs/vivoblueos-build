@@ -1,23 +1,33 @@
 page_table = false
-# Covers KMiri stacks, Rust backing allocations and the highest UART MMIO register.
-total_mem_size = 0x20000000
+# qemu_riscv64 DRAM: PHYS_DRAM_BASE 0x80000000 + PHYS_DRAM_SIZE 128MB.
+total_mem_size = 0x88000000
+stack_mem_size = 0x100000
 [[kalloc]]
 name = "HeapBacking"
-base_addr = 0x03000000
+# KERNEL_HEAP_PHYS / KERNEL_HEAP_SIZE in kernel/src/boards/qemu_riscv64/config.rs.
+base_addr = 0x80800000
 size = 0x800000
 align = 0x1000
 [[kalloc]]
 name = "Uart0"
+# NS16550_UART0_BASE
 base_addr = 0x10000000
 size = 0x7
 align = 0x1
 [[kalloc]]
-name = "Clint"
-base_addr = 0x02000000
-size = 0xc000
+name = "ClintMtime"
+# riscv_timer casts this address directly; the window base must be that address.
+base_addr = 0x0200bff8
+size = 0x8
+align = 0x8
+[[kalloc]]
+name = "ClintMtimecmp"
+base_addr = 0x02004000
+size = 0x8
 align = 0x8
 [[kalloc]]
 name = "Plic"
+# PLIC_BASE
 base_addr = 0x0c000000
 size = 0x200008
 align = 0x4

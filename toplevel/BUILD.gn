@@ -32,6 +32,10 @@ if (miri_test_kernel) {
   }
 }
 
+group("qemu_kernel") {
+  deps = [ "//apps/example/no_std:no_std_example" ]
+}
+
 group("default") {
   deps = [ "//build/boards/${board}:default" ]
 }
